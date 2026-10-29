@@ -1,0 +1,364 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --background: #080d18;
+    --panel: #111b2d;
+    --panel-light: #17243a;
+    --border: #29384f;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --green: #4ade80;
+    --orange: #fb923c;
+    --red: #f87171;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at top, #14243a 0%, transparent 55%),
+        var(--background);
+    color: var(--text);
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 6%;
+    background: #0c1423;
+    border-bottom: 1px solid var(--border);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.shield {
+    font-size: 38px;
+}
+
+.brand h1 {
+    font-size: 29px;
+    color: var(--green);
+    letter-spacing: 0.5px;
+}
+
+.brand p {
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.live-badge {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 14px;
+    border: 1px solid #285e48;
+    border-radius: 30px;
+    background: #10271f;
+    color: var(--green);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 10px #4ade8070;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(320px, 1fr);
+    gap: 25px;
+    width: 90%;
+    max-width: 1250px;
+    margin: 38px auto;
+    align-items: start;
+}
+
+.camera-card,
+.status-card {
+    min-width: 0;
+    padding: 25px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: linear-gradient(
+        145deg,
+        var(--panel-light),
+        var(--panel)
+    );
+    box-shadow: 0 15px 40px #00000025;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 23px;
+}
+
+.section-heading h2 {
+    font-size: 20px;
+    margin-bottom: 7px;
+}
+
+.section-heading p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.camera-label {
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: #cbd5e1;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.camera-frame {
+    overflow: hidden;
+    width: 100%;
+    min-height: 220px;
+    background: #050912;
+    border: 1px solid #334155;
+    border-radius: 12px;
+}
+
+.camera-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 220px;
+    object-fit: contain;
+}
+
+.camera-note {
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.status-icon {
+    font-size: 24px;
+    color: var(--green);
+}
+
+.metric {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 17px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.metric-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: #0d1728;
+    font-size: 19px;
+}
+
+.metric-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.metric-info span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.metric-info strong {
+    overflow-wrap: anywhere;
+    font-size: 14px;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #64748b;
+}
+
+.indicator.green {
+    background: var(--green);
+    box-shadow: 0 0 10px #4ade8050;
+}
+
+.indicator.orange {
+    background: var(--orange);
+    box-shadow: 0 0 10px #fb923c50;
+}
+
+.indicator.red {
+    background: var(--red);
+    box-shadow: 0 0 10px #f8717150;
+}
+
+.indicator.gray {
+    background: #64748b;
+}
+
+.measurements {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 13px;
+    margin-top: 22px;
+}
+
+.measurement {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #0d1728;
+}
+
+.measurement span {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.measurement strong {
+    font-size: 25px;
+    color: #e2e8f0;
+}
+
+.measurement small {
+    color: var(--green);
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.overall-status {
+    margin-top: 22px;
+    padding: 21px;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    background: #0d1728;
+    transition: background 0.3s, border-color 0.3s;
+}
+
+.overall-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    color: var(--muted);
+}
+
+.overall-status h3 {
+    margin-top: 12px;
+    font-size: 22px;
+    overflow-wrap: anywhere;
+}
+
+.overall-status p {
+    margin-top: 9px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #cbd5e1;
+}
+
+.status-normal {
+    border-color: #286448;
+    background: #0d251d;
+}
+
+.status-normal h3 {
+    color: var(--green);
+}
+
+.status-warning {
+    border-color: #86511e;
+    background: #2a1d10;
+}
+
+.status-warning h3 {
+    color: var(--orange);
+}
+
+.status-danger {
+    border-color: #873939;
+    background: #2d1418;
+}
+
+.status-danger h3 {
+    color: var(--red);
+}
+
+footer {
+    padding: 25px 15px 30px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+@media (max-width: 850px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+        width: 92%;
+        margin: 25px auto;
+    }
+
+    .top-header {
+        padding: 20px 4%;
+    }
+
+    .camera-card,
+    .status-card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand h1 {
+        font-size: 23px;
+    }
+
+    .brand p {
+        max-width: 200px;
+        font-size: 11px;
+    }
+
+    .shield {
+        font-size: 30px;
+    }
+
+    .live-badge {
+        padding: 8px;
+        font-size: 9px;
+    }
+
+    .measurements {
+        grid-template-columns: 1fr 1fr;
+    }
+}

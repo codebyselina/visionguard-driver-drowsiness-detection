@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VisionGuard | Driver Safety</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <header class="top-header">
+        <div class="brand">
+            <span class="shield">🛡️</span>
+            <div>
+                <h1>VisionGuard</h1>
+                <p>Intelligent Driver Monitoring System</p>
+            </div>
+        </div>
+
+        <div class="live-badge">
+            <span class="live-dot"></span>
+            LIVE MONITORING
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <section class="camera-card">
+            <div class="section-heading">
+                <div>
+                    <h2>Driver Camera</h2>
+                    <p>Real-time facial landmark analysis</p>
+                </div>
+                <span class="camera-label">WEBCAM</span>
+            </div>
+
+            <div class="camera-frame">
+                <img
+                    src="{{ url_for('video_feed') }}"
+                    alt="Live driver monitoring camera"
+                >
+            </div>
+
+            <p class="camera-note">
+                Green dots represent detected facial landmarks.
+            </p>
+        </section>
+
+        <section class="status-card">
+            <div class="section-heading">
+                <div>
+                    <h2>Detection Status</h2>
+                    <p>Live analysis results</p>
+                </div>
+                <span class="status-icon">◉</span>
+            </div>
+
+            <div class="metric">
+                <div class="metric-icon">👁️</div>
+                <div class="metric-info">
+                    <span>Eye Status</span>
+                    <strong id="eye-status">Connecting...</strong>
+                </div>
+                <span class="indicator" id="eye-indicator"></span>
+            </div>
+
+            <div class="metric">
+                <div class="metric-icon">🥱</div>
+                <div class="metric-info">
+                    <span>Yawning</span>
+                    <strong id="yawn-status">Waiting...</strong>
+                </div>
+                <span class="indicator" id="yawn-indicator"></span>
+            </div>
+
+            <div class="metric">
+                <div class="metric-icon">🧭</div>
+                <div class="metric-info">
+                    <span>Head Position</span>
+                    <strong id="head-status">Waiting...</strong>
+                </div>
+                <span class="indicator" id="head-indicator"></span>
+            </div>
+
+            <div class="measurements">
+                <div class="measurement">
+                    <span>Eye Aspect Ratio</span>
+                    <strong id="ear-value">--</strong>
+                    <small>EAR</small>
+                </div>
+
+                <div class="measurement">
+                    <span>Mouth Aspect Ratio</span>
+                    <strong id="mar-value">--</strong>
+                    <small>MAR</small>
+                </div>
+            </div>
+
+            <div class="overall-status status-normal" id="overall-card">
+                <span class="overall-label">OVERALL DRIVER STATUS</span>
+                <h3 id="overall-status">Connecting...</h3>
+                <p id="status-description">
+                    Waiting for camera analysis
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>VisionGuard · Real-Time Driver Drowsiness Detection</p>
+        <p>Educational demonstration only — not a certified safety device.</p>
+    </footer>
+
+    <script>
+        function setIndicator(id, state) {
+            const indicator = document.getElementById(id);
+            indicator.className = "indicator " + state;
+        }
+
+        function setTextState(id, text, state) {
+            const element = document.getElementById(id);
+            element.textContent = text;
+            element.className = state;
+        }
+
+        async function updateStatus() {
+            try {
+                const response = await fetch("/status", {
+                    cache: "no-store"
+                });
+
+                if (!response.ok) {
+                    throw new Error("Unable to get status");
+                }
+
+                const data = await response.json();
+
+                document.getElementById("eye-status").textContent =
+                    data.eye ?? "Waiting...";
+
+                document.getElementById("yawn-status").textContent =
+                    data.yawn ?? "Waiting...";
+
+                document.getElementById("head-status").textContent =
+                    data.head ?? "Waiting...";
+
+                document.getElementById("ear-value").textContent =
+                    Number(data.ear || 0).toFixed(3);
+
+                document.getElementById("mar-value").textContent =
+                    Number(data.mar || 0).toFixed(3);
+
+                const eye = String(data.eye || "");
+                const yawn = String(data.yawn || "");
+                const head = String(data.head || "");
+                const overall = String(data.overall || "System Ready");
+
+                setIndicator(
+                    "eye-indicator",
+                    eye.includes("WARNING") ? "red" :
+                    eye === "EYES CLOSED" ? "orange" :
+                    eye === "EYES OPEN" ? "green" : "gray"
+                );
+
+                setIndicator(
+                    "yawn-indicator",
+                    yawn === "YAWNING DETECTED" ? "orange" :
+                    yawn === "NO YAWN" ? "green" : "gray"
+                );
+
+                setIndicator(
+                    "head-indicator",
+                    head === "HEAD NORMAL" ? "green" :
+                    head === "HEAD DOWN" || head === "HEAD TILTED"
+                        ? "orange" : "gray"
+                );
+
+                const overallCard =
+                    document.getElementById("overall-card");
+
+                const overallHeading =
+                    document.getElementById("overall-status");
+
+                const description =
+                    document.getElementById("status-description");
+
+                overallHeading.textContent = overall;
+
+                overallCard.classList.remove(
+                    "status-normal",
+                    "status-warning",
+                    "status-danger"
+                );
+
+                if (overall.includes("DROWSINESS WARNING")) {
+                    overallCard.classList.add("status-danger");
+                    description.textContent =
+                        "Prolonged eye closure detected. Take a safe break.";
+                } else if (
+                    overall.includes("FATIGUE") ||
+                    overall.includes("CHECK HEAD")
+                ) {
+                    overallCard.classList.add("status-warning");
+                    description.textContent =
+                        "Possible fatigue indicator detected.";
+                } else if (overall === "ALERT") {
+                    overallCard.classList.add("status-normal");
+                    description.textContent =
+                        "No current warning from the implemented checks.";
+                } else {
+                    overallCard.classList.add("status-warning");
+                    description.textContent =
+                        "Waiting for a clear face detection result.";
+                }
+
+            } catch (error) {
+                document.getElementById("overall-status").textContent =
+                    "Connecting to server...";
+
+                document.getElementById("status-description").textContent =
+                    "Check that the Flask application is running.";
+            }
+        }
+
+        updateStatus();
+        setInterval(updateStatus, 500);
+    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
