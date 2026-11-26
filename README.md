@@ -65,8 +65,4 @@ Limitations and Safety
 - EAR and head-position rules may produce false positives or false negatives.
 - This academic prototype must not be relied on to determine whether someone is safe to drive.
 - If sleepy, the driver should stop at a safe location and rest.
-References
-1. World Health Organization (WHO), Road Traffic Injuries.
-2. National Highway Traffic Safety Administration (NHTSA), Drowsy Driving: Avoid Falling Asleep Behind the Wheel.
-3. Ghoddoosian, R., Galib, M., & Athitsos, V. (2019). A Realistic Dataset and Baseline Temporal Model for Early Drowsiness Detection. CVPR Workshops.
-4. Google Research / MediaPipe, facial landmark detection documentation.
+
